@@ -32,7 +32,6 @@ func init() {
 	}
 	config = &mockFrasersClientConfig{}
 	fc = NewFrasersClient(config)
-	fmt.Println(os.Getenv("TEST_FRASERS_BASE_URL"))
 }
 
 func TestProjectList(t *testing.T) {
