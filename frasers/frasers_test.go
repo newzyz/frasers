@@ -37,13 +37,7 @@ func (cfg *mockFrasersClientConfig) FrasersPropertyClientID() string {
 func (cfg *mockFrasersClientConfig) FrasersPropertyClientSecretKey() string {
 	return os.Getenv("TEST_FRASERS_PROPERTY_CLIENT_SECRET_KEY")
 }
-func (cfg *mockFrasersClientConfig) FrasersApiBaseURL() string {
-	return os.Getenv("TEST_FRASERS_API_BASE_URL")
-}
 
-func (cfg *mockFrasersClientConfig) FrasersToken() string {
-	return os.Getenv("TEST_FRASERS_TOKEN")
-}
 func init() {
 	err := godotenv.Load("../.env")
 	if err != nil {
@@ -117,7 +111,6 @@ func TestCustomer(t *testing.T) {
 	phone := os.Getenv("TEST_FRASERS_PROPERTY_CITIZEN_PHONE")
 	consumer := os.Getenv("TEST_FRASERS_PROPERTY_CONSUMER_USERNAME")
 
-	fmt.Println("cloiemt", phone)
 	r, err := fc.Customer(context.Background(), consumer, cityid, phone, "or")
 	if err != nil {
 		t.Errorf("Customer() failed: %s", err)
@@ -136,6 +129,7 @@ func TestProject(t *testing.T) {
 	if err != nil {
 		t.Errorf("Project() failed: %s", err)
 	}
+
 	//Check Result
 	j, _ := json.MarshalIndent(r, "", " ")
 	fmt.Println("")

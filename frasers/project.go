@@ -12,7 +12,7 @@ type Project struct {
 	Data []ProjectData2 `json:"data"`
 }
 type ProjectData2 struct {
-	ID            string         `json:"id"`
+	ID            string      `json:"id"`
 	NameData      NameData    `json:"nameData"`
 	AddressData   AddressData `json:"addressData"`
 	TranferStatus string      `json:"tranferStatus"`
@@ -23,7 +23,7 @@ type NameData struct {
 	Nickname string `json:"nickname"`
 }
 type AddressData struct {
-	Zone     string  `json:"zone"`
+	Zone       string  `json:"zone"`
 	Latitude   float64 `json:"latitude"`
 	Longtitude float64 `json:"longtitude"`
 }
@@ -31,15 +31,8 @@ type AddressData struct {
 func (c *frasersClient) Project(ctx context.Context) (Project, error) {
 
 	var result Project
-	url := fmt.Sprintf("%s%s", c.config.FrasersApiBaseURL(), "/v1.0/Projects/All/UpdateDate/2010-01-01")
+	url := fmt.Sprintf("%s%s", c.config.FrasersPropertyBaseURL(), "/v1.0/Projects/All/UpdateDate/2010-01-01")
 	method := "GET"
-
-	// jsonBytes, err := json.Marshal(plq)
-	// if err != nil {
-	// 	return Project{}, err
-	// }
-	// jsonStr := string(jsonBytes)
-	//payload := strings.NewReader(jsonStr)
 
 	client := &http.Client{}
 
@@ -47,9 +40,14 @@ func (c *frasersClient) Project(ctx context.Context) (Project, error) {
 	if err != nil {
 		return Project{}, err
 	}
-	
-	token := fmt.Sprintf("%s %s","Bearer",  c.config.FrasersToken())
-	req.Header.Add("Authorization", token)
+
+	//Remark
+	r, err := c.AccessToken(context.Background())
+	if err != nil {
+		return Project{}, err
+	}
+
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", r.AccessToken))
 
 	res, err := client.Do(req)
 	if err != nil {
