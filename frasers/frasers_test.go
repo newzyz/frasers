@@ -89,3 +89,36 @@ func TestZoneList(t *testing.T) {
 	fmt.Println("")
 	assert.Equal(t, "งามวงศ์วาน-แคราย-วงศ์สว่าง-ประชาชื่น", r.Data[0].NameTH)
 }
+
+func TestAccessToken(t *testing.T) {
+
+	r, err := fc.AccessToken(context.Background())
+	if err != nil {
+		t.Errorf("AccessToken() failed: %s", err)
+	}
+	//Check Result
+	j, _ := json.MarshalIndent(r, "", " ")
+	fmt.Println("")
+	fmt.Println("TestAccessToken result =>", string(j))
+	fmt.Println("")
+	assert.Equal(t, "bearer", r.TokenType)
+}
+
+func TestCustomer(t *testing.T) {
+
+	cityid := os.Getenv("TEST_FRASERS_PROPERTY_CITIZEN_ID")
+	phone := os.Getenv("TEST_FRASERS_PROPERTY_CITIZEN_PHONE")
+	consumer := os.Getenv("TEST_FRASERS_PROPERTY_CONSUMER_USERNAME")
+
+	fmt.Println("cloiemt", phone)
+	r, err := fc.Customer(context.Background(), consumer, cityid, phone, "or")
+	if err != nil {
+		t.Errorf("Customer() failed: %s", err)
+	}
+	//Check Result
+	j, _ := json.MarshalIndent(r, "", " ")
+	fmt.Println("")
+	fmt.Println("TestCustomer result =>", string(j))
+	fmt.Println("")
+	assert.NotEmpty(t, r.Data)
+}
