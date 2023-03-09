@@ -56,22 +56,6 @@ func (c *frasersClient) ProjectList(ctx context.Context, plq ProjectListQuery) (
 	}
 	jsonStr := string(jsonBytes)
 
-	// payload := strings.NewReader(fmt.Sprintf(`{
-	//     "pageNo":%d,
-	// 	"pageSize":%d,
-	// 	"searchQuery":%s,
-	// 	"projectType":%d,
-	// 	"brandId":%d,
-	// 	"sortType":%d,
-	// 	"priceMin":%f,
-	// 	"priceMax":%f,
-	// 	"recommendFlag":%d,
-	// 	"lat":%f,
-	// 	"long":%f
-	// }`, *plq.PageNo, *plq.PageSize, *plq.SearchQuery, *plq.ProjectType,
-	// 	plq.BrandId, *plq.SortType, *plq.PriceMin,
-	// 	*plq.PriceMax, *plq.RecommendFlag, *plq.Lat, *plq.Long))
-
 	payload := strings.NewReader(jsonStr)
 
 	client := &http.Client{}

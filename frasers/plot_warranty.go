@@ -28,7 +28,7 @@ type PlotWarrantyData struct {
 func (c *frasersClient) PlotWarranty(ctx context.Context) (PlotWarranty, error) {
 
 	var result PlotWarranty
-	url := fmt.Sprintf("%s%s", c.config.FrasersApiBaseURL(), "/v1.0/Projects/38026/Plots/All/PlotWarranty")
+	url := fmt.Sprintf("%s%s", c.config.FrasersPropertyBaseURL(), "/v1.0/Projects/38026/Plots/All/PlotWarranty")
 	method := "GET"
 	client := &http.Client{}
 
@@ -36,9 +36,14 @@ func (c *frasersClient) PlotWarranty(ctx context.Context) (PlotWarranty, error) 
 	if err != nil {
 		return PlotWarranty{}, err
 	}
-	
-	token := fmt.Sprintf("%s %s","Bearer",  c.config.FrasersToken())
-	req.Header.Add("Authorization", token)
+
+	//Remark
+	r, err := c.AccessToken(context.Background())
+	if err != nil {
+		return PlotWarranty{}, err
+	}
+
+	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", r.AccessToken))
 
 	res, err := client.Do(req)
 	if err != nil {

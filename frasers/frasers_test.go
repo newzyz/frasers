@@ -37,13 +37,7 @@ func (cfg *mockFrasersClientConfig) FrasersPropertyClientID() string {
 func (cfg *mockFrasersClientConfig) FrasersPropertyClientSecretKey() string {
 	return os.Getenv("TEST_FRASERS_PROPERTY_CLIENT_SECRET_KEY")
 }
-func (cfg *mockFrasersClientConfig) FrasersApiBaseURL() string {
-	return os.Getenv("TEST_FRASERS_API_BASE_URL")
-}
 
-func (cfg *mockFrasersClientConfig) FrasersToken() string {
-	return os.Getenv("TEST_FRASERS_TOKEN")
-}
 func init() {
 	err := godotenv.Load("../.env")
 	if err != nil {
@@ -97,12 +91,45 @@ func TestZoneList(t *testing.T) {
 	assert.Equal(t, "งามวงศ์วาน-แคราย-วงศ์สว่าง-ประชาชื่น", r.Data[0].NameTH)
 }
 
+func TestAccessToken(t *testing.T) {
+
+	r, err := fc.AccessToken(context.Background())
+	if err != nil {
+		t.Errorf("AccessToken() failed: %s", err)
+	}
+	//Check Result
+	j, _ := json.MarshalIndent(r, "", " ")
+	fmt.Println("")
+	fmt.Println("TestAccessToken result =>", string(j))
+	fmt.Println("")
+	assert.Equal(t, "bearer", r.TokenType)
+}
+
+func TestCustomer(t *testing.T) {
+
+	cityid := os.Getenv("TEST_FRASERS_PROPERTY_CITIZEN_ID")
+	phone := os.Getenv("TEST_FRASERS_PROPERTY_CITIZEN_PHONE")
+	consumer := os.Getenv("TEST_FRASERS_PROPERTY_CONSUMER_USERNAME")
+
+	r, err := fc.Customer(context.Background(), consumer, cityid, phone, "or")
+	if err != nil {
+		t.Errorf("Customer() failed: %s", err)
+	}
+	//Check Result
+	j, _ := json.MarshalIndent(r, "", " ")
+	fmt.Println("")
+	fmt.Println("TestCustomer result =>", string(j))
+	fmt.Println("")
+	assert.NotEmpty(t, r.Data)
+}
+
 func TestProject(t *testing.T) {
 
 	r, err := fc.Project(context.Background())
 	if err != nil {
 		t.Errorf("Project() failed: %s", err)
 	}
+
 	//Check Result
 	j, _ := json.MarshalIndent(r, "", " ")
 	fmt.Println("")
@@ -111,11 +138,11 @@ func TestProject(t *testing.T) {
 	assert.Equal(t, "02021", r.Data[0].ID)
 	assert.Equal(t, "โกลเด้น ทาวน์ ๒ ลาดพร้าว-เกษตรนวมินทร์ (ไม่ใช้แล้ว)", r.Data[0].NameData.NameTH)
 	assert.Equal(t, "Golden Town ๒ Ladphrao-Kasetnawami (No Use)", r.Data[0].NameData.NameEN)
-	assert.Equal(t, "GT๒-LPKN",  r.Data[0].NameData.Nickname)
+	assert.Equal(t, "GT๒-LPKN", r.Data[0].NameData.Nickname)
 	assert.Equal(t, " ตำบล/แขวง  อำเภอ/เขต  จังหวัด  ", r.Data[0].AddressData.Zone)
 	assert.Equal(t, 13.7991430, r.Data[0].AddressData.Latitude)
 	assert.Equal(t, 100.6636390, r.Data[0].AddressData.Longtitude)
-	assert.Empty(t,r.Data[0].TranferStatus)
+	assert.Empty(t, r.Data[0].TranferStatus)
 }
 
 func TestPlot(t *testing.T) {
