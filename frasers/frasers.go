@@ -7,14 +7,6 @@ type FrasersClient interface {
 	ZoneList(context.Context) (ZoneList, error)
 }
 
-type Client struct {
-	URL string
-}
-
-// func NewClient(url string) *Client {
-// 	return &Client{URL: url}
-// }
-
 type frasersClient struct {
 	config FrasersClientConfig
 }

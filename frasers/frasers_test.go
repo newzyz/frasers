@@ -25,8 +25,20 @@ func (cfg *mockFrasersClientConfig) FrasersBaseURL() string {
 func (cfg *mockFrasersClientConfig) FrasersAPIKey() string {
 	return os.Getenv("TEST_FRASERS_API_KEY")
 }
+func (cfg *mockFrasersClientConfig) FrasersPropertyBaseURL() string {
+	return os.Getenv("TEST_FRASERS_PROPERTY_BASE_URL")
+}
+func (cfg *mockFrasersClientConfig) FrasersPropertyGrantTypeClient() string {
+	return os.Getenv("TEST_FRASERS_PROPERTY_GRANT_TYPE_CLIENT")
+}
+func (cfg *mockFrasersClientConfig) FrasersPropertyClientID() string {
+	return os.Getenv("TEST_FRASERS_PROPERTY_CLIENT_ID")
+}
+func (cfg *mockFrasersClientConfig) FrasersPropertyClientSecretKey() string {
+	return os.Getenv("TEST_FRASERS_PROPERTY_CLIENT_SECRET_KEY")
+}
 func init() {
-	err := godotenv.Load()
+	err := godotenv.Load("../.env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
