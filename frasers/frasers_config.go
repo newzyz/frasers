@@ -7,4 +7,6 @@ type FrasersClientConfig interface {
 	FrasersPropertyGrantTypeClient() string
 	FrasersPropertyClientID() string
 	FrasersPropertyClientSecretKey() string
+	FrasersApiBaseURL() string
+	FrasersToken() string
 }

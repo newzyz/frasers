@@ -37,6 +37,13 @@ func (cfg *mockFrasersClientConfig) FrasersPropertyClientID() string {
 func (cfg *mockFrasersClientConfig) FrasersPropertyClientSecretKey() string {
 	return os.Getenv("TEST_FRASERS_PROPERTY_CLIENT_SECRET_KEY")
 }
+func (cfg *mockFrasersClientConfig) FrasersApiBaseURL() string {
+	return os.Getenv("TEST_FRASERS_API_BASE_URL")
+}
+
+func (cfg *mockFrasersClientConfig) FrasersToken() string {
+	return os.Getenv("TEST_FRASERS_TOKEN")
+}
 func init() {
 	err := godotenv.Load("../.env")
 	if err != nil {
@@ -88,4 +95,64 @@ func TestZoneList(t *testing.T) {
 	fmt.Println("TestZoneList result =>", string(j))
 	fmt.Println("")
 	assert.Equal(t, "งามวงศ์วาน-แคราย-วงศ์สว่าง-ประชาชื่น", r.Data[0].NameTH)
+}
+
+func TestProject(t *testing.T) {
+
+	r, err := fc.Project(context.Background())
+	if err != nil {
+		t.Errorf("Project() failed: %s", err)
+	}
+	//Check Result
+	j, _ := json.MarshalIndent(r, "", " ")
+	fmt.Println("")
+	fmt.Println("TestProject result =>", string(j))
+	fmt.Println("")
+	assert.Equal(t, "02021", r.Data[0].ID)
+	assert.Equal(t, "โกลเด้น ทาวน์ ๒ ลาดพร้าว-เกษตรนวมินทร์ (ไม่ใช้แล้ว)", r.Data[0].NameData.NameTH)
+	assert.Equal(t, "Golden Town ๒ Ladphrao-Kasetnawami (No Use)", r.Data[0].NameData.NameEN)
+	assert.Equal(t, "GT๒-LPKN",  r.Data[0].NameData.Nickname)
+	assert.Equal(t, " ตำบล/แขวง  อำเภอ/เขต  จังหวัด  ", r.Data[0].AddressData.Zone)
+	assert.Equal(t, 13.7991430, r.Data[0].AddressData.Latitude)
+	assert.Equal(t, 100.6636390, r.Data[0].AddressData.Longtitude)
+	assert.Empty(t,r.Data[0].TranferStatus)
+}
+
+func TestPlot(t *testing.T) {
+	r, err := fc.Plot(context.Background())
+	if err != nil {
+		t.Errorf("Plot() failed: %s", err)
+	}
+	//Check Result
+	j, _ := json.MarshalIndent(r, "", " ")
+	fmt.Println("")
+	fmt.Println("TestPlot result =>", string(j))
+	fmt.Println("")
+	assert.Equal(t, "30025", r.Data[0].ProjectData.ID)
+	assert.Equal(t, "A01", r.Data[0].PlotData.ID)
+	assert.Equal(t, "เซนต์เจมส์", r.Data[0].PlotData.TypeData.TypeTh)
+	assert.Equal(t, "Saint James", r.Data[0].PlotData.TypeData.TypeEn)
+	assert.Equal(t, 23.00, r.Data[0].PlotData.Sizing)
+	assert.Equal(t, "ตรว", r.Data[0].PlotData.Unit)
+	assert.Equal(t, "23/39หมู่ -ซอย ท่านผู้หญิงพหลถนน -ตำบล/แขวง ลาดยาวอำเภอ/เขต จตุจักรจังหวัด กรุงเทพมหานคร", r.Data[0].PlotData.Location)
+	assert.Equal(t, 3793294.58, r.Data[0].PlotData.Price)
+	assert.Equal(t, "T", r.Data[0].PlotData.Status)
+}
+
+func TestPlotWarranty(t *testing.T) {
+
+	r, err := fc.PlotWarranty(context.Background())
+	if err != nil {
+		t.Errorf("TestPlotWarranty() failed: %s", err)
+	}
+	//Check Result
+	j, _ := json.MarshalIndent(r, "", " ")
+	fmt.Println("")
+	fmt.Println("TestPlotWarranty result =>", string(j))
+	fmt.Println("")
+	assert.Equal(t, "38026", r.Data[0].ProjectData.ID)
+	assert.Equal(t, "00001", r.Data[0].PlotData.ID)
+	assert.Equal(t, "2010-08-24T00:00:00Z", r.Data[0].PlotData.TransferDate)
+	assert.Equal(t, "2011-08-24T00:00:00Z", r.Data[0].PlotData.WarrantyDate)
+	assert.Equal(t, 6339360.78, r.Data[0].PlotData.Price)
 }
