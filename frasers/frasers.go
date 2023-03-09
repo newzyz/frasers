@@ -5,6 +5,9 @@ import "context"
 type FrasersClient interface {
 	ProjectList(context.Context, ProjectListQuery) (ProjectList, error)
 	ZoneList(context.Context) (ZoneList, error)
+	Project(ctx context.Context) (Project, error)
+	Plot(ctx context.Context) (Plot, error)
+	PlotWarranty(ctx context.Context) (PlotWarranty, error)
 }
 
 type frasersClient struct {
