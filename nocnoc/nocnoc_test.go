@@ -32,13 +32,28 @@ func init() {
 	nn = NewNocNocClient(config)
 }
 
+func TestGetCategories(t *testing.T) {
+
+	r, err := nn.GetCategories(context.Background(), "CAT104", 2)
+	if err != nil {
+		t.Errorf("GetCategories() failed: %s", err)
+	}
+	//Check Result
+	j, _ := json.MarshalIndent(r, "", " ")
+	fmt.Println("")
+	fmt.Println("TestGetCategoriesResult =>", string(j))
+	fmt.Println("")
+
+	assert.Equal(t, "CAT104", r.Data.ObjectID)
+}
+
 func TestSettingsCategories(t *testing.T) {
 
 	isHighlight := true
 	isRecommend := true
-	// included := "categories,categories"
+	included := "categories,categories"
 
-	r, err := nn.SettingsCategories(context.Background(), &isHighlight, &isRecommend, nil)
+	r, err := nn.SettingsCategories(context.Background(), &isHighlight, &isRecommend, &included)
 	if err != nil {
 		t.Errorf("SettingsCategories() failed: %s", err)
 	}
@@ -47,7 +62,7 @@ func TestSettingsCategories(t *testing.T) {
 	fmt.Println("")
 	fmt.Println("TestSettingsCategoriesresult =>", string(j))
 	fmt.Println("")
-	assert.Equal(t, "CAT104", *r.Data[0].ObjectId)
+	assert.Equal(t, "CAT104", r.Data[0].ObjectId)
 }
 
 func TestDeleteSettingsCategories(t *testing.T) {

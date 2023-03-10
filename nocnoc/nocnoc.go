@@ -3,6 +3,7 @@ package nocnoc
 import "context"
 
 type NocNocClient interface {
+	GetCategories(ctx context.Context, categoryId string, deepLevel int) (GetCategoriesDetail, error)
 	SettingsCategories(ctx context.Context, isHighlight, isRecommend *bool, includes *string) (SettingsCategoriesList, error)
 	AddSettingsCategories(ctx context.Context, categoryId string, isHighlight, isRecommend bool) (AddSettingsCategoriesResponse, error)
 	DeleteSettingsCategories(ctx context.Context, categoryId string) error

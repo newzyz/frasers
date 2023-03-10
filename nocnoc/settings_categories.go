@@ -15,9 +15,9 @@ type SettingsCategoriesQuery struct {
 }
 
 type SettingsCategoriesList struct {
-	Meta     Meta         `json:"meta"`
-	Data     []Categories `json:"data"`
-	Included *Included    `json:"included"`
+	Meta     Meta                `json:"meta"`
+	Data     []CategoriesSetting `json:"data"`
+	Included *Included           `json:"included"`
 }
 
 type Meta struct {
@@ -25,22 +25,15 @@ type Meta struct {
 }
 
 type Included struct {
-	Categories []CategoriesDetail `json:"categories"`
+	Categories []Categories `json:"categories"`
 }
 
-type Categories struct {
-	ObjectId  *string `json:"objectId"`
-	CreatedAt *string `json:"createdAt"`
-	UpdatedAt *string `json:"updatedAt"`
-}
-
-type CategoriesDetail struct {
-	ObjectId   *string `json:"objectId"`
-	Title      *string `json:"title"`
-	IconUrl    *string `json:"iconUrl"`
-	CreatedAt  *string `json:"createdAt"`
-	UpdatedAt  *string `json:"updatedAt"`
-	WebLinkUrl *string `json:"webLinkUrl"`
+type CategoriesSetting struct {
+	ObjectId    string `json:"objectId"`
+	CreatedAt   string `json:"createdAt"`
+	UpdatedAt   string `json:"updatedAt"`
+	IsHighlight *bool  `json:"isHighlight,omitempty"`
+	IsRecommend *bool  `json:"isRecommend,omitempty"`
 }
 
 func (nn *nocNocClient) SettingsCategories(ctx context.Context, isHighlight, isRecommend *bool, includes *string) (SettingsCategoriesList, error) {
