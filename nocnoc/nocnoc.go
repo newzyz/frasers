@@ -6,6 +6,7 @@ type NocNocClient interface {
 	SettingsCategories(ctx context.Context, isHighlight, isRecommend *bool, includes *string) (SettingsCategoriesList, error)
 	AddSettingsCategories(ctx context.Context, categoryId string, isHighlight, isRecommend bool) (AddSettingsCategoriesResponse, error)
 	DeleteSettingsCategories(ctx context.Context, categoryId string) error
+	GetAllCategories(ctx context.Context, query *CategoriesQuery) (CategoriesResponse, error)
 }
 
 type nocNocClient struct {

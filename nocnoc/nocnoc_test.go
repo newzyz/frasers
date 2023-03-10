@@ -73,3 +73,36 @@ func TestAddSettingsCategories(t *testing.T) {
 	fmt.Println("")
 	assert.Equal(t, "CAT104", *r.Data.ObjectId)
 }
+
+func TestGetAllCategories(t *testing.T) {
+	startLevel := 0
+	downLevel := 2
+	var isAvailable *bool = nil
+	var isHighlight *bool = nil
+	var isRecommend *bool = nil
+	query := &CategoriesQuery{
+		StartLevel:  &startLevel,
+		DownLevel:   &downLevel,
+		IsAvailable: isAvailable,
+		IsHighlight: isHighlight,
+		IsRecommend: isRecommend,
+	}
+
+	r, err := nn.GetAllCategories(context.Background(), query)
+	if err != nil {
+		t.Errorf("TestGetAllCategories() failed: %s", err)
+	}
+
+	//Check Result
+	j, _ := json.MarshalIndent(r, "", " ")
+	
+	fmt.Println("")
+	fmt.Println("TestGetAllCategoriesResult =>", string(j))
+	fmt.Println("")
+	assert.Equal(t, 10, r.Meta.TotalCount)
+	assert.Equal(t, "CAT104", r.Data[0].ObjectID)
+	assert.Equal(t, "บริการแนะนำ", r.Data[0].Title)
+	assert.Equal(t, "https://d1led8yawtaysu.cloudfront.net/assets/icons/Thumb-up-line.svg", r.Data[0].IconURL)
+	assert.Equal(t, "2023-01-11T07:50:54.068Z", r.Data[0].CreatedAt)
+	assert.Equal(t, "2023-03-09T06:32:14.000Z", r.Data[0].UpdatedAt)
+}
