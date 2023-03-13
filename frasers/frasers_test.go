@@ -124,8 +124,9 @@ func TestCustomer(t *testing.T) {
 }
 
 func TestProject(t *testing.T) {
-
-	r, err := fc.Project(context.Background())
+	projectID := "All"
+	updateDate := "2010-01-01"
+	r, err := fc.Project(context.Background(), projectID, updateDate)
 	if err != nil {
 		t.Errorf("Project() failed: %s", err)
 	}
@@ -146,7 +147,10 @@ func TestProject(t *testing.T) {
 }
 
 func TestPlot(t *testing.T) {
-	r, err := fc.Plot(context.Background())
+	projectID := "30025"
+	plotID:= "All"
+	updateDate := "2010-01-01"
+	r, err := fc.Plot(context.Background(),projectID,plotID,updateDate)
 	if err != nil {
 		t.Errorf("Plot() failed: %s", err)
 	}
@@ -167,8 +171,9 @@ func TestPlot(t *testing.T) {
 }
 
 func TestPlotWarranty(t *testing.T) {
-
-	r, err := fc.PlotWarranty(context.Background())
+	projectID := "38026"
+	plotID:= "All"
+	r, err := fc.PlotWarranty(context.Background(),projectID,plotID)
 	if err != nil {
 		t.Errorf("TestPlotWarranty() failed: %s", err)
 	}

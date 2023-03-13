@@ -7,9 +7,9 @@ type FrasersClient interface {
 	ZoneList(context.Context) (ZoneList, error)
 	AccessToken(context.Context) (AccessTokenResponse, error)
 	Customer(ctx context.Context, consumerUsername, citizenId, phoneNumber, ctype string) (CustomerResponse, error)
-	Project(ctx context.Context) (Project, error)
-	Plot(ctx context.Context) (Plot, error)
-	PlotWarranty(ctx context.Context) (PlotWarranty, error)
+	Project(ctx context.Context, projectID string, updateDate string)  (Project, error)
+	Plot(ctx context.Context, projectID string, plotID string, updateDate string) (Plot, error) 
+	PlotWarranty(ctx context.Context, projectID string, plotID string) (PlotWarranty, error) 
 }
 
 type frasersClient struct {

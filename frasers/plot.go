@@ -33,10 +33,10 @@ type TypeData struct {
 	TypeEn string `json:"typeEn"`
 }
 
-func (c *frasersClient) Plot(ctx context.Context) (Plot, error) {
+func (c *frasersClient) Plot(ctx context.Context, projectID string, plotID string, updateDate string) (Plot, error) {
 
 	var result Plot
-	url := fmt.Sprintf("%s%s", c.config.FrasersPropertyBaseURL(), "/v1.0/Projects/30025/Plots/All/UpdateDate/2010-01-01")
+	url := fmt.Sprintf("%s%s%s%s%s%s%s", c.config.FrasersPropertyBaseURL(), "/v1.0/Projects/", projectID, "/Plots/", plotID, "/UpdateDate/", updateDate)
 	method := "GET"
 
 	fmt.Println("URL", url)

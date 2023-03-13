@@ -28,10 +28,10 @@ type AddressData struct {
 	Longtitude float64 `json:"longtitude"`
 }
 
-func (c *frasersClient) Project(ctx context.Context) (Project, error) {
+func (c *frasersClient) Project(ctx context.Context, projectID string, updateDate string) (Project, error) {
 
 	var result Project
-	url := fmt.Sprintf("%s%s", c.config.FrasersPropertyBaseURL(), "/v1.0/Projects/All/UpdateDate/2010-01-01")
+	url := fmt.Sprintf("%s%s%s%s%s", c.config.FrasersPropertyBaseURL(), "/v1.0/Projects/", projectID, "/UpdateDate/", updateDate)
 	method := "GET"
 
 	client := &http.Client{}
