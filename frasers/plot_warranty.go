@@ -25,10 +25,10 @@ type PlotWarrantyData struct {
 	Price        float64 `json:"price"`
 }
 
-func (c *frasersClient) PlotWarranty(ctx context.Context) (PlotWarranty, error) {
+func (c *frasersClient) PlotWarranty(ctx context.Context, projectID string, plotID string) (PlotWarranty, error) {
 
 	var result PlotWarranty
-	url := fmt.Sprintf("%s%s", c.config.FrasersPropertyBaseURL(), "/v1.0/Projects/38026/Plots/All/PlotWarranty")
+	url := fmt.Sprintf("%s%s%s%s%s%s", c.config.FrasersPropertyBaseURL(), "/v1.0/Projects/", projectID, "/Plots/", plotID, "/PlotWarranty")
 	method := "GET"
 	client := &http.Client{}
 
